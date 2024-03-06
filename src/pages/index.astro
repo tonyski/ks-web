@@ -1,0 +1,17 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Banner from '../components/home/banner.svelte';
+
+import { getImage } from 'astro:assets';
+import hero from '../assets/images/hero.jpeg';
+
+import { get } from '../utils/request';
+
+const optimizedHero = await getImage({ src: hero, format: 'webp' });
+
+const data = await get('/test');
+---
+
+<Layout title="卡卡的课后空间">
+	<Banner client:load count={data.count} hero={optimizedHero.src} />
+</Layout>

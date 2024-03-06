@@ -1,0 +1,41 @@
+name: 'deploy'
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: pnpm/action-setup@v3
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+      - run: pnpm install --prod --frozen-lockfile
+      - name: create env file
+        run: |
+          touch .env
+          echo PUBLIC_KS_API_URL=${{ vars.KS_API_URL }} >> .env
+      - run: pnpm build
+      - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@main
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ARGS: '-rlgoDzvc --delete'
+          SOURCE: './'
+          REMOTE_HOST: ${{ vars.REMOTE_HOST }}
+          REMOTE_USER: ${{ vars.REMOTE_USER }}
+          TARGET: ${{ vars.REMOTE_TARGET }}
+          EXCLUDE: '/.git/,/.github/,/.vscode/'
+          SCRIPT_AFTER: |
+            cd ${{ vars.REMOTE_TARGET }}
+            pm2 reload pm2.config.cjs --update-env
+            echo $RSYNC_STDOUT
