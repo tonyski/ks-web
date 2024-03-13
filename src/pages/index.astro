@@ -1,6 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Banner from '../components/home/banner.svelte';
+import Like from '../components/home/Like.svelte';
+import Homework from '../components/home/Homework.astro';
+import Bookstore from '../components/home/Bookstore.astro';
+import HobbyTeam from '../components/home/HobbyTeam.astro';
 
 import { get } from '../utils/request';
 
@@ -13,10 +16,14 @@ const data = await get('/test');
 			<div class="max-w-md">
 				<h1 class="text-5xl font-bold">卡卡的课后空间</h1>
 				<p class="py-6">
-					非常感谢您的关注！我们正在紧锣密鼓地准备中，我们将为您带来丰富多彩的内容和精彩的活动。敬请期待! 😊
+					非常感谢您的关注！我们正在紧锣密鼓地准备中，我们将为您带来丰富多彩的内容和精彩的活动。敬请期待!
+					😊
 				</p>
-				<Banner client:load count={data.count} />
+				<Like client:load count={data.count} />
 			</div>
 		</div>
 	</div>
+	<Homework />
+	<Bookstore />
+	<HobbyTeam />
 </Layout>
