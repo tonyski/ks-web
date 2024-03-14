@@ -1,15 +1,12 @@
 import { writable } from 'svelte/store';
 
-const hasWindow = typeof window !== 'undefined';
-const stored = hasWindow && localStorage.theme;
+const stored = localStorage.theme;
 
 // Set the stored value or a sane default.
-export const theme = writable(stored || 'light');
+export const theme = writable(stored || 'emerald');
 
 // Anytime the store changes, update the local storage value (if possible).
 theme.subscribe((value) => {
-	if (hasWindow) {
-		localStorage.theme = value;
-		document.documentElement.setAttribute('data-theme', value);
-	}
+	localStorage.theme = value;
+	document.documentElement.setAttribute('data-theme', value);
 });

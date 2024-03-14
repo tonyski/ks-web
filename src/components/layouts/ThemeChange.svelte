@@ -8,7 +8,7 @@
 		type="checkbox"
 		class="theme-controller"
 		checked={$theme === 'dark'}
-		on:change={() => theme.set($theme === 'dark' ? 'light' : 'dark')}
+		on:change={() => theme.set($theme === 'dark' ? 'emerald' : 'dark')}
 	/>
 
 	<!-- sun icon -->
